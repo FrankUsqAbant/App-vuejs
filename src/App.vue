@@ -1,26 +1,109 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <div id="header">
+      <Search v-on:query-change="querySearch" />
+    </div>
+
+    <div id="main-container">
+      <h2>Todos</h2>
+      <TodoAdd v-on:add-todo="addTodo" />
+      <Todos v-bind:todoslist="copyTodos" v-on:delete-todo="deleteTodo" />
+    </div>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+//import HelloWorld from "./components/HelloWorld.vue";
+import Search from "./components/Search";
+import Todos from "./components/Todos";
+import TodoAdd from "./components/TodoAdd";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    // eslint-disable-next-line vue/no-unused-components
+    Search,
+    Todos,
+    TodoAdd,
+  },
+  methods: {
+    deleteTodo(id) {
+      this.todos = this.todos.filter((todo) => todo.id != id);
+      this.copyTodos = [...this.todos];
+    },
+    addTodo(todo) {
+      this.todos.push(todo);
+      this.copyTodos = [...this.todos];
+    },
+    querySearch(query) {
+      if (query.trim() === "") {
+        this.copyTodos = [...this.todos];
+      } else {
+        const temp = this.todos.filter((todo) => {
+          return todo.title.includes(query);
+        });
+
+        this.copyTodos = [...temp];
+      }
+    },
+  },
+  data() {
+    return {
+      todos: [
+        {
+          id: 0,
+          title: "comprar la cena",
+          completed: false,
+        },
+        {
+          id: 1,
+          title: "sacar a pasear al perro",
+          completed: true,
+        },
+        {
+          id: 2,
+          title: "jugar Xbox",
+          completed: false,
+        },
+        {
+          id: 3,
+          title: "Terminar tutorial",
+          completed: false,
+        },
+      ],
+      copyTodos: [],
+    };
+  },
+  created() {
+    this.copyTodos = [...this.todos];
+  },
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.5em;
+  padding: 0;
+  margin: 0;
+}
+
+#main-container {
+  border: solid 1px #ccc;
+  width: 600px;
+  margin: 100px auto;
+}
+
+#header {
+  background: black;
+  padding: 10px;
+}
+
+h2 {
+  padding: 0 10px;
 }
 </style>
