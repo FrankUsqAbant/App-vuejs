@@ -1,5 +1,8 @@
 # app-vuejs
 
+![vuejs](https://user-images.githubusercontent.com/90288287/165468717-3ba1b79f-d2ad-416b-b2b7-fc6586dfca66.png)
+
+
 ## Project setup
 ```
 npm install
